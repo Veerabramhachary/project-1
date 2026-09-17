@@ -1,6 +1,5 @@
 import { useAuth } from "@clerk/expo";
-import { router } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Redirect, router } from "expo-router";
 import "../../global.css";
 export default function Index() {
     const { isLoaded, isSignedIn } = useAuth();
@@ -11,16 +10,5 @@ export default function Index() {
     const hadleGoSignIn = () => {
         router.push("/sign-in");
     };
-    return (
-        <View className="flex-1 items-center justify-center">
-            <Text>Edit src/app/index.tsx to edit this screen.</Text>
-            {!isSignedIn ? (
-                <Pressable onPress={hadleGoSignIn} style={{ marginTop: 20 }}>
-                    <Text style={{ color: "blue" }}>Go to Sign In</Text>
-                </Pressable>
-            ) : (
-                ""
-            )}
-        </View>
-    );
+    return <Redirect href={isSignedIn ? "/(tabs)" : "/sign-in"} />;
 }
