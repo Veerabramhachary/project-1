@@ -4,9 +4,13 @@ import { Redirect, useRouter } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const ProfileScreen = () => {
-    const { isSignedIn, signOut } = useAuth();
+    const { isLoaded, isSignedIn, signOut } = useAuth();
     const { user } = useUser();
     const router = useRouter();
+
+    if (!isLoaded) {
+        return null;
+    }
 
     if (!isSignedIn) {
         return <Redirect href="/sign-in" />;
@@ -14,8 +18,8 @@ const ProfileScreen = () => {
 
     const handleLogout = async () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-        router.replace("/(tabs)");
         await signOut();
+        router.replace("/sign-in");
     };
     return (
         <SafeAreaView className="flex-1 ">
